@@ -45,11 +45,13 @@ spec:
     stages {
         stage('Prepare kcli environment') {
             steps {
+            dir("/root") {
                 container('kcli') {
                 sh '''
                 echo proutos
                 '''
                 }
+            }
             }
         }
     }
