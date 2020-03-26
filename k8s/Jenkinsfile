@@ -21,6 +21,7 @@ pipeline {
       cloud 'openshift'
       label 'kcli'
       serviceAccount 'default'
+      defaultContainer 'kcli'
       yaml """
 apiVersion: v1
 kind: Pod
@@ -38,11 +39,9 @@ spec:
     stages {
         stage('Prepare kcli environment') {
             steps {
-                container('kcli') {
                 sh '''
                 echo proutos
                 '''
-                }
             }
         }
     }
