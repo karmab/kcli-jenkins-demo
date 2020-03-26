@@ -47,11 +47,7 @@ spec:
             steps {
                 container('kcli') {
                 sh '''
-                [ -d $HOME/.kcli ] && rm -rf $HOME/.kcli
-                mkdir $HOME/.kcli
-                cp "$KCLI_CONFIG" $HOME/.kcli/config.yml
-                cp "$KCLI_SSH_ID_RSA" $HOME/.kcli/id_rsa
-                cp "$KCLI_SSH_ID_RSA_PUB" $HOME/.kcli/id_rsa.pub
+                echo proutos
                 '''
                 }
             }
