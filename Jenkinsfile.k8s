@@ -47,13 +47,14 @@ spec:
                 mkdir $HOME/.kcli
                 cp "$KCLI_CONFIG" $HOME/.kcli/config.yml
                 cp "$KCLI_SSH_ID_RSA" $HOME/.kcli/id_rsa
+                chmod 600 $HOME/.kcli/id_rsa
                 cp "$KCLI_SSH_ID_RSA_PUB" $HOME/.kcli/id_rsa.pub
                 '''
             }
         }
         stage('Check kcli client') {
             steps {
-                sh '${KCLI} list client'
+                sh '${KCLI} list vm'
             }
         }
         stage('Deploy kcli plan') {
