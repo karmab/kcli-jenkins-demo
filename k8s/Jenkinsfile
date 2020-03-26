@@ -29,8 +29,8 @@ spec:
     runAsUser: 0
   containers:
   - name: kcli
-    image: docker.io/karmab/kcli:latest
-    command: ['kweb']
+    image: docker.io/alpine:3.10
+    command: ['cat']
     tty: true
 """
         }
