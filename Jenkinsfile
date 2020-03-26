@@ -3,9 +3,9 @@ properties(
   parameters (
     [
     booleanParam(name: 'wait', defaultValue: false, description: 'Wait for plan to finish'),
-    string(name: 'kcli_config_yml', defaultValue: "kcli_config_yml", description: 'Secret File Credential storing your ~/.kcli/config.yml'),
-    string(name: 'kcli_id_rsa', defaultValue: "kcli_id_rsa", description: 'Secret File Credential storing your private key'),
-    string(name: 'kcli_id_rsa_pub', defaultValue: "kcli_id_rsa_pub", description: 'Secret File Credential container your public key'),
+    string(name: 'kcli-config-yml', defaultValue: "kcli-config-yml", description: 'Secret File Credential storing your ~/.kcli/config.yml'),
+    string(name: 'kcli-id-rsa', defaultValue: "kcli-id-rsa", description: 'Secret File Credential storing your private key'),
+    string(name: 'kcli-id-rsa-pub', defaultValue: "kcli-id-rsa-pub", description: 'Secret File Credential container your public key'),
     string(name: 'prefix', defaultValue: "prout", description: ''),
     string(name: 'image', defaultValue: "CentOS-7-x86_64-GenericCloud.qcow2", description: ''),
     string(name: 'pool', defaultValue: "default", description: ''),
@@ -18,9 +18,9 @@ properties(
 pipeline {
     agent any
     environment {
-     KCLI_CONFIG = credentials(${params.kcli_config_yml})
-     KCLI_SSH_ID_RSA = credentials(${params.kcli_id_rsa})
-     KCLI_SSH_ID_RSA_PUB = credentials(${params.kcli_id_rsa_pub})
+     KCLI_CONFIG = credentials(${params.kcli-config-yml})
+     KCLI_SSH_ID_RSA = credentials(${params.kcli-id-rsa})
+     KCLI_SSH_ID_RSA_PUB = credentials(${params.kcli-id_rsa_pub})
      KCLI_PARAMETERS = "-P prefix=${params.prefix} -P image=${params.image} -P pool=${params.pool} -P network=${params.network}"
      CONTAINER_OPTIONS = "--net host --rm --security-opt label=disable -v $HOME/.kcli:/root/.kcli -v $HOME/.ssh:/root/.ssh -v $PWD:/workdir -v /var/tmp:/ignitiondir"
      KCLI = "docker run ${CONTAINER_OPTIONS} karmab/kcli"
@@ -33,7 +33,9 @@ pipeline {
                 mkdir $HOME/.kcli
                 cp "$KCLI_CONFIG" $HOME/.kcli/config.yml
                 cp "$KCLI_SSH_ID_RSA" $HOME/.kcli/id_rsa
+                chmod 600 $HOME/.kcli/id_rsa
                 cp "$KCLI_SSH_ID_RSA_PUB" $HOME/.kcli/id_rsa.pub
+                [ -f /i_am_a_container ] && rm /i_am_a_container
                 '''
             }
         }
