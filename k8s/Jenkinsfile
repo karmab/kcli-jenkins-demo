@@ -20,7 +20,6 @@ pipeline {
       cloud 'openshift'
       label 'kcli'
       serviceAccount 'default'
-      defaultContainer 'kcli'
       yaml """
 apiVersion: v1
 kind: Pod
@@ -46,6 +45,7 @@ spec:
     stages {
         stage('Prepare kcli environment') {
             steps {
+                container('kcli') {
                 sh '''
                 [ -d $HOME/.kcli ] && rm -rf $HOME/.kcli
                 mkdir $HOME/.kcli
@@ -53,11 +53,14 @@ spec:
                 cp "$KCLI_SSH_ID_RSA" $HOME/.kcli/id_rsa
                 cp "$KCLI_SSH_ID_RSA_PUB" $HOME/.kcli/id_rsa.pub
                 '''
+                }
             }
         }
         stage('Check kcli client') {
             steps {
+                container('kcli') {
                 sh '${KCLI} list client'
+                }
             }
         }
         stage('Deploy kcli plan') {
@@ -69,9 +72,11 @@ spec:
                      WAIT = ""
                   }
                 }
+                container('kcli') {
                 sh """
                   ${KCLI} create plan -f ${WORKSPACE}/kcli_plan.yml ${KCLI_PARAMETERS} ${WAIT} ${env.JOB_NAME}_${env.BUILD_NUMBER}
                 """
+                }
             }
         }
     }
