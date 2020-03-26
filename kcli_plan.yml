@@ -1,0 +1,14 @@
+parameters:
+ prefix: prout
+ image: CentOS-7-x86_64-GenericCloud.qcow2
+ pool: default
+ network: default
+ 
+
+{{ prefix }}-1:
+  memory: 512
+  numcpus: 2
+  nets:
+   - {{ network }}
+  pool: {{ pool }}
+  image: {{ image }}
