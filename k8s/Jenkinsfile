@@ -56,28 +56,5 @@ spec:
                 }
             }
         }
-        stage('Check kcli client') {
-            steps {
-                container('kcli') {
-                sh '${KCLI} list client'
-                }
-            }
-        }
-        stage('Deploy kcli plan') {
-            steps {
-                script {
-                  if ( "${params.wait}" == "true" ) {
-                     WAIT = "--wait"
-                  } else {
-                     WAIT = ""
-                  }
-                }
-                container('kcli') {
-                sh """
-                  ${KCLI} create plan -f ${WORKSPACE}/kcli_plan.yml ${KCLI_PARAMETERS} ${WAIT} ${env.JOB_NAME}_${env.BUILD_NUMBER}
-                """
-                }
-            }
-        }
     }
 }
