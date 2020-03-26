@@ -11,16 +11,16 @@ properties(
     string(name: 'pool', defaultValue: "default", description: ''),
     string(name: 'network', defaultValue: "default", description: ''),
     ]
-  ),
+  )
  ]
 )
 
 pipeline {
     agent any
     environment {
-     KCLI_CONFIG = credentials(${params.kcli_config_yml})
-     KCLI_SSH_ID_RSA = credentials(${params.kcli_id_rsa})
-     KCLI_SSH_ID_RSA_PUB = credentials(${params.kcli_id_rsa_pub})
+     KCLI_CONFIG = credentials("${params.kcli_config_yml}")
+     KCLI_SSH_ID_RSA = credentials("${params.kcli_id_rsa}")
+     KCLI_SSH_ID_RSA_PUB = credentials("${params.kcli_id_rsa_pub}")
      KCLI_PARAMETERS = "-P prefix=${params.prefix} -P image=${params.image} -P pool=${params.pool} -P network=${params.network}"
      CONTAINER_OPTIONS = "--net host --rm --security-opt label=disable -v $HOME/.kcli:/root/.kcli -v $HOME/.ssh:/root/.ssh -v $PWD:/workdir -v /var/tmp:/ignitiondir"
      KCLI = "docker run ${CONTAINER_OPTIONS} karmab/kcli"
@@ -40,7 +40,7 @@ pipeline {
         }
         stage('Check kcli client') {
             steps {
-                sh '${KCLI} client'
+                sh '${KCLI} list client'
             }
         }
         stage('Deploy kcli plan') {
