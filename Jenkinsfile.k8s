@@ -33,8 +33,11 @@ spec:
           }
     }
     environment {
-     CONTAINER_ENGINE = "docker"
-     KCLI_CONFIG = credentials("${params.kcli-config-yml}")
+     KCLI_CONFIG = credentials("kcli-config-yml")
+     KCLI_SSH_ID_RSA = credentials("kcli-id-rsa")
+     KCLI_SSH_ID_RSA_PUB = credentials("kcli-id-rsa-pub")
+     KCLI_PARAMETERS = "-P prefix=${params.prefix} -P image=${params.image} -P pool=${params.pool} -P network=${params.network}"
+     KCLI = "kcli"
     }
     stages {
         stage('Prepare kcli environment') {
