@@ -3,12 +3,14 @@ parameters:
  image: CentOS-7-x86_64-GenericCloud.qcow2
  pool: default
  network: default
+ vms: 1
  
-
-{{ prefix }}-1:
+{% for num in range(0, vms) %}
+{{ prefix }}-{{ num }}:
   memory: 512
   numcpus: 2
   nets:
    - {{ network }}
   pool: {{ pool }}
   image: {{ image }}
+{% endfor %}

@@ -10,6 +10,7 @@ properties(
     string(name: 'image', defaultValue: "CentOS-7-x86_64-GenericCloud.qcow2", description: ''),
     string(name: 'pool', defaultValue: "default", description: ''),
     string(name: 'network', defaultValue: "default", description: ''),
+    string(name: 'vms', defaultValue: "1", description: ''),
     ]
   )
  ]
@@ -21,9 +22,9 @@ pipeline {
      KCLI_CONFIG = credentials("${params.kcli_config_yml}")
      KCLI_SSH_ID_RSA = credentials("${params.kcli_id_rsa}")
      KCLI_SSH_ID_RSA_PUB = credentials("${params.kcli_id_rsa_pub}")
-     KCLI_PARAMETERS = "-P prefix=${params.prefix} -P image=${params.image} -P pool=${params.pool} -P network=${params.network}"
+     KCLI_PARAMETERS = "-P prefix=${params.prefix} -P image=${params.image} -P pool=${params.pool} -P network=${params.network} -P vms=${params.vms}"
      CONTAINER_OPTIONS = "--net host --rm --security-opt label=disable -v $HOME/.kcli:/root/.kcli -v $HOME/.ssh:/root/.ssh -v $PWD:/workdir -v /var/tmp:/ignitiondir"
-     KCLI = "podman run ${CONTAINER_OPTIONS} karmab/kcli"
+     KCLI = "docker run ${CONTAINER_OPTIONS} karmab/kcli"
     }
     stages {
         stage('Prepare kcli environment') {
@@ -35,6 +36,7 @@ pipeline {
                 cp "$KCLI_SSH_ID_RSA" $HOME/.kcli/id_rsa
                 chmod 600 $HOME/.kcli/id_rsa
                 cp "$KCLI_SSH_ID_RSA_PUB" $HOME/.kcli/id_rsa.pub
+                
                 '''
             }
         }

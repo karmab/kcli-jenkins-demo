@@ -10,6 +10,7 @@ properties(
     string(name: 'image', defaultValue: "CentOS-7-x86_64-GenericCloud.qcow2", description: ''),
     string(name: 'pool', defaultValue: "default", description: ''),
     string(name: 'network', defaultValue: "default", description: ''),
+    string(name: 'vms', defaultValue: "1", description: ''),
     ]
   )
  ]
@@ -36,7 +37,7 @@ spec:
      KCLI_CONFIG = credentials("${params.kcli_config_yml}")
      KCLI_SSH_ID_RSA = credentials("${params.kcli_id_rsa}")
      KCLI_SSH_ID_RSA_PUB = credentials("${params.kcli_id_rsa_pub}")
-     KCLI_PARAMETERS = "-P prefix=${params.prefix} -P image=${params.image} -P pool=${params.pool} -P network=${params.network}"
+     KCLI_PARAMETERS = "-P prefix=${params.prefix} -P image=${params.image} -P pool=${params.pool} -P network=${params.network} -P vms=${params.vms}"
      
      KCLI = "kcli"
     }
