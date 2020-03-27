@@ -36,13 +36,13 @@ jenkinsmode: kubernetes
 
 ### Create Jenkins file
 
-Now you can create a Jenkinsfile from your plan
+Now you can create a Jenkinsfile from default *kcli_plan.yml*
 
 ```
-kcli render -jf kcli_plan.yml
+kcli create pipeline
 ```
 
-You can see an example of the generated Jenkinsfile for both targets from the sample plan *kcli_plan.yml* provided in this directory.
+You can see an example of the generated Jenkinsfile for both targets from the sample plan provided in this directory.
 
 Parameters from the plan get converted in Jenkins parameters, along with extra parameters for the credentials and with a `wait` boolean to indicated whether to wait for plan completion upon run.
 
