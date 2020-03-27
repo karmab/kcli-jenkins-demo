@@ -38,8 +38,7 @@ spec:
      KCLI_SSH_ID_RSA = credentials("${params.kcli_id_rsa}")
      KCLI_SSH_ID_RSA_PUB = credentials("${params.kcli_id_rsa_pub}")
      KCLI_PARAMETERS = "-P prefix=${params.prefix} -P image=${params.image} -P pool=${params.pool} -P network=${params.network} -P vms=${params.vms}"
-     
-     KCLI = "kcli"
+     KCLI = kcli
     }
     stages {
         stage('Prepare kcli environment') {
