@@ -26,7 +26,7 @@ You can use arbitrary names for those credentials, but you will then have to eit
 
 ### Kcli configuration
 
-Default backend is *podman* . If you want to use docker or kubernetes instead, add the corresponding snippet in *~/.kcli/config.yml*.
+Default backend is *podman* . If you want to use Docker or Kubernetes instead, add the corresponding snippet in *~/.kcli/config.yml*.
 
 For instance, for Kubernetes:
 
@@ -36,7 +36,7 @@ jenkinsmode: kubernetes
 
 ### Create Jenkins file
 
-Now you can create a Jenkinsfile from default *kcli_plan.yml*
+Now you can create a Jenkinsfile from your specific, or from default *kcli_plan.yml*
 
 ```
 kcli create pipeline
@@ -44,7 +44,10 @@ kcli create pipeline
 
 You can see an example of the generated Jenkinsfile for both targets from the sample plan provided in this directory.
 
-Parameters from the plan get converted in Jenkins parameters, along with extra parameters for the credentials and with a `wait` boolean to indicated whether to wait for plan completion upon run.
+Parameters from the plan get converted in Jenkins parameters, along with extra parameters:
+- for needed credentials (kcli config file, public and private ssh key)
+- a `wait` boolean to indicated whether to wait for plan completion upon run.
+- a `kcli_client` parameter that can be used to override the target client where to launch plan at run time.
 
 Your Jenkinsfile is ready for use!
 

@@ -3,7 +3,7 @@ properties(
   parameters (
     [
     booleanParam(name: 'wait', defaultValue: false, description: 'Wait for plan to finish'),
-    string(name: 'kcli_client', defaultValue: "", description: 'Default Kcli client'),
+    string(name: 'kcli_client', defaultValue: "", description: 'Target Kcli client. Default one will be used if empty'),
     string(name: 'kcli_config_yml', defaultValue: "kcli-config-yml", description: 'Secret File Credential storing your ~/.kcli/config.yml'),
     string(name: 'kcli_id_rsa', defaultValue: "kcli-id-rsa", description: 'Secret File Credential storing your private key'),
     string(name: 'kcli_id_rsa_pub', defaultValue: "kcli-id-rsa-pub", description: 'Secret File Credential container your public key'),
