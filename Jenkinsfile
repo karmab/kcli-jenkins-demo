@@ -3,6 +3,7 @@ properties(
   parameters (
     [
     booleanParam(name: 'wait', defaultValue: false, description: 'Wait for plan to finish'),
+    string(name: 'kcli_client', defaultValue: "", description: 'Default Kcli client'),
     string(name: 'kcli_config_yml', defaultValue: "kcli-config-yml", description: 'Secret File Credential storing your ~/.kcli/config.yml'),
     string(name: 'kcli_id_rsa', defaultValue: "kcli-id-rsa", description: 'Secret File Credential storing your private key'),
     string(name: 'kcli_id_rsa_pub', defaultValue: "kcli-id-rsa-pub", description: 'Secret File Credential container your public key'),
@@ -24,7 +25,7 @@ pipeline {
      KCLI_SSH_ID_RSA_PUB = credentials("${params.kcli_id_rsa_pub}")
      KCLI_PARAMETERS = "-P prefix=${params.prefix} -P image=${params.image} -P pool=${params.pool} -P network=${params.network} -P vms=${params.vms}"
      CONTAINER_OPTIONS = "--net host --rm --security-opt label=disable -v $HOME/.kcli:/root/.kcli -v $PWD:/workdir -v /var/tmp:/ignitiondir"
-     KCLI = "podman run ${CONTAINER_OPTIONS} karmab/kcli"
+     KCLI_CMD = "podman run ${CONTAINER_OPTIONS} karmab/kcli"
     }
     stages {
         stage('Prepare kcli environment') {
@@ -42,12 +43,16 @@ pipeline {
         }
         stage('Check kcli client') {
             steps {
-                sh '${KCLI} list client'
+                sh '${KCLI_CMD} list client'
             }
         }
         stage('Deploy kcli plan') {
             steps {
                 script {
+                  KCLI_CLIENT = ""
+                  if ( "${params.kcli_client}" != "" ) {
+                     KCLI_CLIENT = "-C ${params.kcli_client}"
+                  }
                   if ( "${params.wait}" == "true" ) {
                      WAIT = "--wait"
                   } else {
@@ -55,7 +60,7 @@ pipeline {
                   }
                 }
                 sh """
-                  ${KCLI} create plan -f ${WORKSPACE}/kcli_plan.yml ${KCLI_PARAMETERS} ${WAIT} ${env.JOB_NAME}_${env.BUILD_NUMBER}
+                  ${KCLI_CMD} ${KCLI_CLIENT} create plan -f ${WORKSPACE}/kcli_plan.yml ${KCLI_PARAMETERS} ${WAIT} ${env.JOB_NAME}_${env.BUILD_NUMBER}
                 """
             }
         }
