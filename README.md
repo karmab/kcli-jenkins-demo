@@ -72,6 +72,9 @@ You will also need to allow *anyuid* scc for kcli pod, which can be done with th
 PROJECT=kcli
 oc adm policy add-scc-to-user anyuid system:serviceaccount:$PROJECT:default
 ```
+## Cool picture
+
+![Screenshot](jenkins.png)
 
 ## Copyright
 

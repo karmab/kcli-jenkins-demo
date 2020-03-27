@@ -24,7 +24,7 @@ pipeline {
      KCLI_SSH_ID_RSA_PUB = credentials("${params.kcli_id_rsa_pub}")
      KCLI_PARAMETERS = "-P prefix=${params.prefix} -P image=${params.image} -P pool=${params.pool} -P network=${params.network} -P vms=${params.vms}"
      CONTAINER_OPTIONS = "--net host --rm --security-opt label=disable -v $HOME/.kcli:/root/.kcli -v $HOME/.ssh:/root/.ssh -v $PWD:/workdir -v /var/tmp:/ignitiondir"
-     KCLI = "docker run ${CONTAINER_OPTIONS} karmab/kcli"
+     KCLI = "podman run ${CONTAINER_OPTIONS} karmab/kcli"
     }
     stages {
         stage('Prepare kcli environment') {
